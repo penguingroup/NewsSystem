@@ -3,13 +3,35 @@ from Category.models import *
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("category_id", "category_name")
+    list_display = ("category_id", "category_name",)
     search_fields = ("category_name",)
+    actions = ("publish_selected", "rollback_selected",)
+
+    def publish_selected(self, request, queryset):
+        ids = [_.category_id for _ in queryset]
+        self.message_user(request, u"选中的%d个分类启用成功" % len(ids))
+    publish_selected.short_description = u"启用选中的分类"
+
+    def rollback_selected(self, request, queryset):
+        ids = [_.category_id for _ in queryset]
+        self.message_user(request, u"选中的%d个分类撤销成功" % len(ids))
+    rollback_selected.short_description = u"撤销选中的分类"
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ("city_id", "city_name")
+    list_display = ("city_id", "city_name",)
     search_fields = ("city_name",)
+    actions = ("publish_selected", "rollback_selected",)
+
+    def publish_selected(self, request, queryset):
+        ids = [_.city_id for _ in queryset]
+        self.message_user(request, u"选中的%d个城市启用成功" % len(ids))
+    publish_selected.short_description = u"启用选中的城市"
+
+    def rollback_selected(self, request, queryset):
+        ids = [_.city_id for _ in queryset]
+        self.message_user(request, u"选中的%d个城市撤销成功" % len(ids))
+    rollback_selected.short_description = u"撤销选中的城市"
 
 
 admin.site.register(Category, CategoryAdmin)
