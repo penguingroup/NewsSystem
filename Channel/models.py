@@ -9,6 +9,7 @@ class News(models.Model):
     title = models.CharField(verbose_name="标题", max_length=256, null=False, db_index=True)
     sub_title = models.CharField(verbose_name="副标题", max_length=512, null=True, default="")
     poster = models.URLField(verbose_name="新闻头图", null=True, default="")
+    weight = models.FloatField(verbose_name="权重", null=True, default=0)
     city_set = models.ManyToManyField(City, verbose_name="可见城市", related_name="city_news_tag")
     category_set = models.ManyToManyField(Category, verbose_name="分类", related_name="category_news_tag")
     content = RichTextUploadingField(verbose_name="内容", null=False)

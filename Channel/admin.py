@@ -33,16 +33,19 @@ class CategoryFilter(SimpleListFilter):
 
 
 class NewsAdmin(admin.ModelAdmin):
-    list_display = ('title', 'id', 'city_tag', 'category_tag', 'status', 'created_at', 'updated_at',)
+    list_display = ('title', 'id', 'weight', 'city_tag', 'category_tag', 'status', 'created_at', 'updated_at',)
     search_fields = ('title',)
     fields = (
         ('title', 'sub_title',),
         ('status',),
+        ('weight',),
         ('poster', 'poster_tag',),
-        ('city_tag', 'category_tag',),
+        ('city_tag',),
+        ('category_tag',),
         ('city_set', 'category_set',),
         ('content',),
     )
+    list_editable = ('weight',)
     readonly_fields = ('city_tag', 'category_tag', 'status', 'poster_tag')
     list_filter = (CityFilter, CategoryFilter, 'status')
     list_per_page = 50
