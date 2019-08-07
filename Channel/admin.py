@@ -38,11 +38,12 @@ class NewsAdmin(admin.ModelAdmin):
     fields = (
         ('title', 'sub_title',),
         ('status',),
+        ('poster', 'poster_tag',),
         ('city_tag', 'category_tag',),
         ('city_set', 'category_set',),
         ('content',),
     )
-    readonly_fields = ('city_tag', 'category_tag', 'status')
+    readonly_fields = ('city_tag', 'category_tag', 'status', 'poster_tag')
     list_filter = (CityFilter, CategoryFilter, 'status')
     list_per_page = 50
     ordering = ('-updated_at', '-created_at',)

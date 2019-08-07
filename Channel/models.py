@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.safestring import mark_safe
 from Category.models import City, Category
 from ckeditor_uploader.fields import RichTextUploadingField
 
@@ -7,6 +8,7 @@ class News(models.Model):
     id = models.AutoField(verbose_name="Id", primary_key=True, null=False, db_index=True)
     title = models.CharField(verbose_name="标题", max_length=256, null=False, db_index=True)
     sub_title = models.CharField(verbose_name="副标题", max_length=512, null=True, default="")
+    poster = models.URLField(verbose_name="新闻头图", null=True, default="")
     city_set = models.ManyToManyField(City, verbose_name="可见城市", related_name="city_news_tag")
     category_set = models.ManyToManyField(Category, verbose_name="分类", related_name="category_news_tag")
     content = RichTextUploadingField(verbose_name="内容", null=False)
@@ -28,6 +30,16 @@ class News(models.Model):
 
     category_tag.allow_tags = True
     category_tag.short_description = u"所属分类"
+
+    @mark_safe
+    def poster_tag(self):
+        if self.poster == "":
+            return ""
+        else:
+            return '<img src="%s" width="230px" height="150px"/>' % self.poster
+
+    poster_tag.allow_tags = True
+    poster_tag.short_description = u"头图"
 
     class Meta:
         verbose_name = u"新闻"
