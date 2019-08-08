@@ -49,7 +49,7 @@ class NewsAdmin(admin.ModelAdmin):
     readonly_fields = ('city_tag', 'category_tag', 'status', 'poster_tag')
     list_filter = (CityFilter, CategoryFilter, 'status')
     list_per_page = 50
-    ordering = ('-updated_at', '-created_at',)
+    ordering = ('-weight', '-updated_at', '-created_at',)
     filter_horizontal = ('city_set', 'category_set')
     actions = ['publish_selected', 'rollback_selected']
 
