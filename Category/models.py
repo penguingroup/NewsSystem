@@ -6,6 +6,8 @@ class Category(models.Model):
     category_code = models.CharField(verbose_name="类别代码", max_length=32, null=False, unique=True)
     category_name = models.CharField(verbose_name="类别名称", max_length=256, default="", null=False)
     weight = models.FloatField(verbose_name="权重", null=True, default=0)
+    status = models.SmallIntegerField(verbose_name="媒体状态", null=True, db_index=True, default=0,
+                                      choices=((0, "下线"), (1, "上线")))
 
     def __unicode__(self):
         return self.category_name
@@ -23,6 +25,8 @@ class City(models.Model):
     city_code = models.CharField(verbose_name="城市代码", max_length=32, null=False, unique=True)
     city_name = models.CharField(verbose_name="城市名称", max_length=256, default="", null=False)
     weight = models.FloatField(verbose_name="权重", null=True, default=0)
+    status = models.SmallIntegerField(verbose_name="媒体状态", null=True, db_index=True, default=0,
+                                      choices=((0, "下线"), (1, "上线")))
 
     def __unicode__(self):
         return self.city_name

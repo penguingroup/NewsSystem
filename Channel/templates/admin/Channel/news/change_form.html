@@ -4,9 +4,32 @@
 
 {% block submit_buttons_bottom %}
     <div class="submit-row">
-        <input type="button" value="{% trans '上线' %}" name="_anotherbutton" />
-        <input type="button" value="{% trans '下线' %}" name="_anotherbutton" />
+        <input type="button" value="{% trans '上线' %}" onclick="test(1)"/>
+        <input type="button" value="{% trans '下线' %}" onclick="test(0)"/>
     </div>
 
     {{ block.super }}
+{% endblock %}
+
+{% block content %}
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script>
+        var test = function (status) {
+            var token = $('input[name=csrfmiddlewaretoken]').val();
+            $.ajax({
+                url: '/channel/push/es/',
+                type: "POST",
+                data: {'object_id': {{ object_id }}, 'status': status, 'csrfmiddlewaretoken': token},
+                dataType: "json",
+            }).done(function (data) {
+                console.log(data);
+                if (data['status'] == 0) {
+                    alert('发布到服务器成功');
+                    location.reload();
+                } else
+                    alert(data['msg']);
+            });
+        }
+    </script>
 {% endblock %}

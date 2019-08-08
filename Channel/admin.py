@@ -63,12 +63,21 @@ class NewsAdmin(admin.ModelAdmin):
     def publish_selected(self, request, queryset):
         ids = [_.id for _ in queryset]
         self.message_user(request, u"选中的%d条新闻上线成功" % len(ids))
+
     publish_selected.short_description = u"上线选中的新闻"
 
     def rollback_selected(self, request, queryset):
         ids = [_.id for _ in queryset]
         self.message_user(request, u"选中的%d个新闻下线成功" % len(ids))
+
     rollback_selected.short_description = u"下线选中的新闻"
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
+        extra_context = extra_context or {}
+        extra_context['object_id'] = int(object_id)
+        return super(NewsAdmin, self).change_view(request,
+                                                  object_id,
+                                                  extra_context=extra_context)
 
 
 class ActivityAdmin(admin.ModelAdmin):

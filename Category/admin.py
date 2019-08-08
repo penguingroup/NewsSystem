@@ -3,7 +3,9 @@ from Category.models import *
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ("category_id", "category_name", "weight",)
+    list_display = ("category_id", "category_name", "weight", "status",)
+    list_filter = ("status",)
+    readonly_fields = ("status",)
     search_fields = ("category_name",)
     actions = ("publish_selected", "rollback_selected",)
     list_editable = ("weight",)
@@ -21,7 +23,9 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    list_display = ("city_id", "city_name", "weight",)
+    list_display = ("city_id", "city_name", "weight", "status",)
+    list_filter = ("status",)
+    readonly_fields = ("status",)
     search_fields = ("city_name",)
     actions = ("publish_selected", "rollback_selected",)
     list_editable = ("weight",)
