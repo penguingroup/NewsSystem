@@ -3,11 +3,11 @@ from Category.models import *
 
 
 class CategoryAdmin(admin.ModelAdmin):
-    # list_display = ("category_id", "category_name", "weight",)
+    list_display = ("category_id", "category_name", "weight",)
     search_fields = ("category_name",)
     actions = ("publish_selected", "rollback_selected",)
-    # list_editable = ("weight",)
-    # ordering = ("-weight",)
+    list_editable = ("weight",)
+    ordering = ("-weight",)
 
     def publish_selected(self, request, queryset):
         ids = [_.category_id for _ in queryset]
@@ -21,11 +21,11 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 class CityAdmin(admin.ModelAdmin):
-    # list_display = ("city_id", "city_name", "weight",)
+    list_display = ("city_id", "city_name", "weight",)
     search_fields = ("city_name",)
     actions = ("publish_selected", "rollback_selected",)
-    # list_editable = ("weight",)
-    # ordering = ("-weight",)
+    list_editable = ("weight",)
+    ordering = ("-weight",)
 
     def publish_selected(self, request, queryset):
         ids = [_.city_id for _ in queryset]
