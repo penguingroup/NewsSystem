@@ -121,3 +121,18 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 CKEDITOR_UPLOAD_PATH = 'upload/'
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "KEY_FUNCTION": "Channel.utils.get_redis_prefix_key",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
+            "SOCKET_CONNECT_TIMEOUT": 5,  # in seconds
+            "SOCKET_TIMEOUT": 5,  # in seconds
+            "CONNECTION_POOL_KWARGS": {"max_connections": 100},
+        }
+    }
+}
