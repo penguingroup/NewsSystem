@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.safestring import mark_safe
 from Category.models import City, Category
+from Category.consts import STATUS_ON, STATUS_OFF
 from ckeditor_uploader.fields import RichTextUploadingField
 
 
@@ -13,7 +14,8 @@ class News(models.Model):
     city_set = models.ManyToManyField(City, verbose_name="可见城市", related_name="city_news_tag")
     category_set = models.ManyToManyField(Category, verbose_name="分类", related_name="category_news_tag")
     content = RichTextUploadingField(verbose_name="内容", null=False)
-    status = models.SmallIntegerField(verbose_name="媒体状态", null=True, db_index=True, default=0, choices=((0, "下线"), (1, "上线")))
+    status = models.SmallIntegerField(verbose_name="媒体状态", null=True, db_index=True, default=0,
+                                      choices=((STATUS_OFF, "下线"), (STATUS_ON, "上线")))
     created_at = models.DateTimeField(verbose_name="创建时间", auto_now_add=True)
     updated_at = models.DateTimeField(verbose_name="更新时间", auto_now=True)
 
