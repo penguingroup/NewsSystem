@@ -44,6 +44,21 @@ class News(models.Model):
     poster_tag.allow_tags = True
     poster_tag.short_description = u"头图"
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "sub_title": self.sub_title,
+            "weight": self.weight,
+            "poster": self.poster,
+            "content": self.content,
+            "status": self.status,
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M"),
+            "updated_at": self.updated_at.strftime("%Y-%m-%d %H:%M"),
+            "cities": [city.city_name for city in self.city_set.all()],
+            "categories": [category.category_name for category in self.category_set.all()],
+        }
+
     class Meta:
         verbose_name = u"新闻"
         verbose_name_plural = u"新闻"

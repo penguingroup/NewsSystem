@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.admin import SimpleListFilter
+from Category.consts import STATUS_ON, STATUS_OFF
 from Channel.models import News, Activity
-from Channel.utils import get_permission
+from Channel.utils import get_permission, put_to_es
 
 
 class CityFilter(SimpleListFilter):
@@ -61,14 +62,20 @@ class NewsAdmin(admin.ModelAdmin):
         return query_set.filter(city_set__in=cities, category_set__in=categories).distinct()
 
     def publish_selected(self, request, queryset):
-        ids = [_.id for _ in queryset]
-        self.message_user(request, u"选中的%d条新闻上线成功" % len(ids))
+        news = News.objects.filter(id__in=[_.id for _ in queryset])
+        news.update(status=STATUS_ON)
+        for new in news:
+            put_to_es(new.id, new.to_dict())
+        self.message_user(request, u"选中的%d条新闻上线成功" % queryset.count())
 
     publish_selected.short_description = u"上线选中的新闻"
 
     def rollback_selected(self, request, queryset):
-        ids = [_.id for _ in queryset]
-        self.message_user(request, u"选中的%d个新闻下线成功" % len(ids))
+        news = News.objects.filter(id__in=[_.id for _ in queryset])
+        news.update(status=STATUS_OFF)
+        for new in news:
+            put_to_es(new.id, new.to_dict())
+        self.message_user(request, u"选中的%d个新闻下线成功" % queryset.count())
 
     rollback_selected.short_description = u"下线选中的新闻"
 

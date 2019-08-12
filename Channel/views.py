@@ -1,7 +1,8 @@
 from django.views.decorators.http import require_http_methods
 from django.contrib.admin.views.decorators import staff_member_required
 from django.http import JsonResponse
-from django.core.cache import cache
+from Channel.models import News
+from Channel.utils import *
 
 
 @staff_member_required
@@ -11,8 +12,13 @@ def push_to_es(request):
     try:
         object_id = request.POST["object_id"]
         status = request.POST["status"]
-        result = {"status": status, "object_id": object_id}
-        cache.set("test", result, timeout=600)
+        news = News.objects.get(id=object_id)
+        news.status = status
+        news.save()
+        result = put_to_es(news.id, news.to_dict())
+        if result["_shards"]["failed"] == 0:
+            result["msg"] = "成功"
+            result["code"] = 0
     except Exception as e:
         result["msg"] = e
     finally:
