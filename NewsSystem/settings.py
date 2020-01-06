@@ -126,7 +126,7 @@ CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "KEY_FUNCTION": "Channel.utils.get_redis_prefix_key",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": "redis://:123456@host.docker.internal:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "SERIALIZER": "django_redis.serializers.json.JSONSerializer",
@@ -137,4 +137,4 @@ CACHES = {
     }
 }
 
-ES_HOST = 'http://127.0.0.1:9200/media/news/%d'
+ES_HOST = 'http://host.docker.internal:9200/media/news/%d'
